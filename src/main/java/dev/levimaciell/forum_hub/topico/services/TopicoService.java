@@ -1,10 +1,13 @@
 package dev.levimaciell.forum_hub.topico.services;
 
 import dev.levimaciell.forum_hub.topico.dto.CriarTopicoDto;
+import dev.levimaciell.forum_hub.topico.dto.TopicoDto;
 import dev.levimaciell.forum_hub.topico.entities.Topico;
 import dev.levimaciell.forum_hub.topico.repositories.TopicoRepository;
 import dev.levimaciell.forum_hub.util.Validacao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,4 +30,21 @@ public class TopicoService {
         return topico;
     }
 
+    public TopicoDto buscarPorId(Long id) {
+        var topico = topicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Topico não encontrado!"));
+        return new TopicoDto(topico);
+    }
+
+    public Page<TopicoDto> buscarTodos(Pageable pageable) {
+        return topicoRepository.listarPaginacao(pageable);
+    }
+
+    public Page<TopicoDto> buscarPorCurso(String curso, Pageable pageable) {
+        curso = curso.replace("-", " ");
+        return topicoRepository.listarPorCurso(pageable, curso);
+    }
+
+    public Page<TopicoDto> buscarPorAno(Integer ano, Pageable pageable) {
+        return topicoRepository.listarPorAno(ano, pageable);
+    }
 }

@@ -1,18 +1,18 @@
 package dev.levimaciell.forum_hub.topico.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record CriarTopicoDto(
-        @NotNull
+        @NotBlank
         String titulo,
 
-        @NotNull
+        @NotBlank
         String mensagem,
 
-        @NotNull
+        @NotBlank
         String autor,
 
-        @NotNull
+        @NotBlank
         String curso
 ){
 }
