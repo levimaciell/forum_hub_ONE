@@ -26,5 +26,5 @@ public class TopicoController {
         var novoTopico = service.criarTopico(dto);
         var uri = builder.path("/topicos/{id}").buildAndExpand(novoTopico.getId()).toUri();
         return ResponseEntity.created(uri).body(new TopicoDto(novoTopico));
-    }
+    }//////////
 }
