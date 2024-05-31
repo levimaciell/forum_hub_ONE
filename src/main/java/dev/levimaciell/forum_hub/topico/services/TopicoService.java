@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TopicoService {
@@ -30,6 +31,22 @@ public class TopicoService {
         return topico;
     }
 
+    public TopicoDto atualizarTopico(CriarTopicoDto dto, Long id) {
+
+        var topico = topicoRepository.findById(id).orElseThrow(() -> new RuntimeException(
+                "Tópico não encontrado!"
+        ));
+
+        validacoesCriarTopico.forEach(v -> v.validar(dto));
+
+        topico.setTitulo(dto.titulo());
+        topico.setMensagem(dto.mensagem());
+        topico.setAutor(dto.autor());
+        topico.setCurso(dto.curso());
+
+        return new TopicoDto(topico);
+    }
+
     public TopicoDto buscarPorId(Long id) {
         var topico = topicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Topico não encontrado!"));
         return new TopicoDto(topico);
@@ -46,5 +63,12 @@ public class TopicoService {
 
     public Page<TopicoDto> buscarPorAno(Integer ano, Pageable pageable) {
         return topicoRepository.listarPorAno(ano, pageable);
+    }
+
+
+    public TopicoDto deletarPorId(Long id) {
+        var topico = topicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Topico não encontrado!"));
+        topicoRepository.deleteById(id);
+        return new TopicoDto(topico);
     }
 }

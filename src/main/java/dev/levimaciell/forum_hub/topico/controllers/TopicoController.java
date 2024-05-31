@@ -33,6 +33,15 @@ public class TopicoController {
     }
 
 
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<TopicoDto> atualizar(@RequestBody @Valid CriarTopicoDto dto,
+                                               @PathVariable @NotNull Long id){
+        var topicoAtualizado = service.atualizarTopico(dto, id);
+        return ResponseEntity.ok(topicoAtualizado);
+    }
+
+
     @GetMapping("/{id}")
     public TopicoDto buscarPorId(@PathVariable @NotNull Long id){
         return service.buscarPorId(id);
@@ -66,5 +75,9 @@ public class TopicoController {
         return ResponseEntity.ok(page);
     }
 
+    @DeleteMapping("/{id}")
+    public TopicoDto deletar(@PathVariable @NotNull Long id){
+        return service.deletarPorId(id);
+    }
 
 }
