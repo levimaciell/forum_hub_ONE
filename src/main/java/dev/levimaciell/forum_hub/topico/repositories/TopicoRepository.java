@@ -27,4 +27,5 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
 
     @Query("Select t from Topico t where YEAR(t.dataCriacao) = :ano")
     Page<TopicoDto> listarPorAno(Integer ano, Pageable pageable);
+
 }

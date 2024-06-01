@@ -21,6 +21,6 @@ public class ValidarTopicoDuplicado implements Validacao<CriarTopicoDto> {
         Optional<Topico> topicoEncontrado = repository.buscarTopicoPorTituloEMensagem(dto.titulo(), dto.mensagem());
 
         if(topicoEncontrado.isPresent())
-            throw new ValidacaoException("Título e mensagem do novo tópico são duplicados!");
+            throw new ValidacaoException("Tópico duplicado! Já existe um com o mesmo título e a mesma mensagem!");
     }
 }

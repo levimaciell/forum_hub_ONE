@@ -1,5 +1,6 @@
 package dev.levimaciell.forum_hub.topico.services;
 
+import dev.levimaciell.forum_hub.exception.TopicoNaoEncontradoException;
 import dev.levimaciell.forum_hub.topico.dto.CriarTopicoDto;
 import dev.levimaciell.forum_hub.topico.dto.TopicoDto;
 import dev.levimaciell.forum_hub.topico.entities.Topico;
@@ -33,7 +34,7 @@ public class TopicoService {
 
     public TopicoDto atualizarTopico(CriarTopicoDto dto, Long id) {
 
-        var topico = topicoRepository.findById(id).orElseThrow(() -> new RuntimeException(
+        var topico = topicoRepository.findById(id).orElseThrow(() -> new TopicoNaoEncontradoException(
                 "Tópico não encontrado!"
         ));
 
@@ -48,7 +49,7 @@ public class TopicoService {
     }
 
     public TopicoDto buscarPorId(Long id) {
-        var topico = topicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Topico não encontrado!"));
+        var topico = topicoRepository.findById(id).orElseThrow(() -> new TopicoNaoEncontradoException("Topico não encontrado!"));
         return new TopicoDto(topico);
     }
 
@@ -58,16 +59,22 @@ public class TopicoService {
 
     public Page<TopicoDto> buscarPorCurso(String curso, Pageable pageable) {
         curso = curso.replace("-", " ");
-        return topicoRepository.listarPorCurso(pageable, curso);
+        var topicos = topicoRepository.listarPorCurso(pageable, curso);
+        if(topicos.isEmpty())
+            throw new TopicoNaoEncontradoException("Não foram encontrados tópicos! Verifique o nome do curso");
+        return topicos;
     }
 
     public Page<TopicoDto> buscarPorAno(Integer ano, Pageable pageable) {
-        return topicoRepository.listarPorAno(ano, pageable);
+        var topicos = topicoRepository.listarPorAno(ano, pageable);
+        if(topicos.isEmpty())
+            throw new TopicoNaoEncontradoException("Não foram encontrados tópicos do ano " + ano);
+        return topicos;
     }
 
 
     public TopicoDto deletarPorId(Long id) {
-        var topico = topicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Topico não encontrado!"));
+        var topico = topicoRepository.findById(id).orElseThrow(() -> new TopicoNaoEncontradoException("Topico não encontrado!"));
         topicoRepository.deleteById(id);
         return new TopicoDto(topico);
     }
