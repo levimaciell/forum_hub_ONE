@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record CriarUsuarioDto(
+public record DadosUsuarioDto(
         @NotBlank(message = "Campo email não pode ser nulo!")
         @Email(message = "Por favor, digite um email válido!")
         String email,
