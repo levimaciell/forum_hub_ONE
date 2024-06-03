@@ -15,7 +15,7 @@ public class ValidarUsuarioJaExistente implements Validacao<DadosUsuarioDto> {
 
     @Override
     public void validar(DadosUsuarioDto dto) {
-        if(repository.existsByUsuario(dto.email()))
+        if(repository.existsByUsuario(dto.usuario()))
             throw new ValidacaoException("Usuário com email informado já existe!");
     }
 }

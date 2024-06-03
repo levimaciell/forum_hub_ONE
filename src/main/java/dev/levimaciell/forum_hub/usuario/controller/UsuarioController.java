@@ -30,10 +30,12 @@ public class UsuarioController {
 
     @Autowired
     private TokenService tokenService;
+    private DadosUsuarioDto dto;
 
     @PostMapping("/signup")
     @Transactional
     public ResponseEntity criarUsuario(@RequestBody @Valid DadosUsuarioDto dto){
+        this.dto = dto;
         service.criarUsuario(dto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
@@ -41,7 +43,7 @@ public class UsuarioController {
     @PostMapping("/login")
     @Transactional
     public ResponseEntity efetuarLogin(@RequestBody @Valid DadosUsuarioDto dto){
-        var authToken = new UsernamePasswordAuthenticationToken(dto.email(), dto.senha());
+        var authToken = new UsernamePasswordAuthenticationToken(dto.usuario(), dto.senha());
         var authentication = authenticationManager.authenticate(authToken);
         var tokenJwt = tokenService.gerarToken((Usuario) authentication.getPrincipal());
         return ResponseEntity.ok(new TokenDados(tokenJwt));

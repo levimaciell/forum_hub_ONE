@@ -26,7 +26,7 @@ public class Usuario implements UserDetails {
     private String senha;
 
     public Usuario(DadosUsuarioDto dto){
-        this.usuario = dto.email();
+        this.usuario = dto.usuario();
         this.senha = dto.senha();
     }
 

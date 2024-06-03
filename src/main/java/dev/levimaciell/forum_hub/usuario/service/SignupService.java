@@ -25,7 +25,7 @@ public class SignupService {
     public void criarUsuario(DadosUsuarioDto dto) {
         validacoesCriarUsuario.forEach(v -> v.validar(dto));
 
-        Usuario usuario = new Usuario(new DadosUsuarioDto(dto.email(), passwordEncoder.encode(dto.senha())));
+        Usuario usuario = new Usuario(new DadosUsuarioDto(dto.usuario(), passwordEncoder.encode(dto.senha())));
 
         repository.save(usuario);
     }
